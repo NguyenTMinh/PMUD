@@ -1,0 +1,16 @@
+item { 
+	name:'stop'
+	id:1
+}
+item { 
+	name:'di_thang'
+	id:2
+}
+item { 
+	name:'re_trai'
+	id:3
+}
+item { 
+	name:'re_phai'
+	id:4
+}
