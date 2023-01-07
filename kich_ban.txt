@@ -25,4 +25,8 @@
   * hiển thị thông tin mô tả vào vùng 3
   * hiển thị kết quả search bing vào vùng 2
   * Khi đã trả kết quả xong, nút 2 và nút 1 bị disable, nút 3 lại được enable lên
-- Kết thúc một quá trình chạy và cứ thế. 
+- Kết thúc một quá trình chạy và cứ thế.
+
+
+3. Logic phía back-end:
+- client gửi ảnh base64 cho serverJS -> serverJS xử lý convert thành png, lưu ảnh tại thư mục cố định, và gọi serverPy xử lý nhận diện -> serverPy nhận diện ảnh, xuất ảnh có chứa vật thể đã được detect, kèm theo thông tin object đó gửi trả lại serverJS -> serverJS nhận tín hiệu query db lấy thông tin, đồng thời lấy ảnh detect bên trên gửi trả lại cho client.

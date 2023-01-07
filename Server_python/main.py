@@ -28,8 +28,8 @@ def home_page():
     return detect()
 
 #test route api
-@app.route('/hello')
-def hello_world():
+@app.route('/detect_from_image')
+def detect_image():
 	image_guess = PATH_GUESS + 'di_thang_9.png'
 	image_out = PATH_DETECTED + 'di_thang_9.png'
 	guess = detect_from_image(image_guess, image_out)
