@@ -134,8 +134,8 @@ def detect_from_image(image_path, image_path_detect):
 		print(category_index[detections['detection_classes'][0] + 1])
 		
 	cv2.imwrite(image_path_detect, image_np_with_detections)
-	plt.imshow(cv2.cvtColor(image_np_with_detections, cv2.COLOR_BGR2RGB))
-	plt.show()
+	# plt.imshow(cv2.cvtColor(image_np_with_detections, cv2.COLOR_BGR2RGB))
+	# plt.show()
 
 	return category_index[detections['detection_classes'][0] + 1]
 

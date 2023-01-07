@@ -1,0 +1,28 @@
+# LINK FIGMA GIAO DIỆN: https://www.figma.com/file/xWJodfGmhrGmKgrKXYcOkw/Untitled?node-id=0%3A1&t=h6uUubeKDKi75vBI-0
+#
+# CÁC MÔ TẢ BÊN DƯỚI SẼ PHỎNG THEO THIẾT KẾ TRONG FIGMA
+#
+#
+1. Mô tả các nút/ vùng:
+- Giao diện web chính phác thảo giống như trong figma
+- Giao diện sẽ có 3 nút chức năng, chức năng các nút cụ thể như sau:
+ + nút 1: bắt đầu gửi ảnh cho server để bắt đầu nhận diện vật thể
+ + nút 2: hủy quá trình nhận diện ảnh
+ + nút 3: chụp ảnh từ webcam
+- vùng màu xanh-vùng webcam (vùng 1): hiển thị webcam trực tiếp, hiển thị ảnh người dùng chụp, hiển thị ảnh detect từ server về.
+- vùng màu đỏ-vùng bing (vùng 2): vùng hiển thị kết quả search từ bing
+- vùng màu xanh-vùng thông tin (vùng 3): hiển thị mô tả biển lấy từ server
+
+#NOTE: thứ tự kịch bản chạy từ trên xuống, giải thuật cũng nên bám theo khung thế này
+2. Kịch bản: 
+-  bắt đầu trang web vùng 2, vùng 3 để trống chưa có thông tin hiển thị. Vùng 1 đang được hiển thị webcam. 3 nút được hiển thị nhưng nút 1, nút 2 sẽ bị disable (2 nút này không bấm được).
+- User bấm chụp bằng nút 3: Lúc này cap ảnh và hiển thị luôn ảnh vào vùng 1. Lúc này nút 1 sẽ được enable để người dùng có thể bắt đầu phiên (có thể code check nếu có ảnh thì mới enable cái nút 1 này lên). Lúc này nút 3 vẫn được enable để người dùng vẫn có thể capture ảnh lại được nếu không ưng ảnh cũ. 
+- User bấm nút 1: bắt đầu gửi ảnh này sang cho server để xử lý, lúc này nút 3 sẽ bị disable đi, không cho người dùng chụp thêm ảnh nào nữa. Bấm xong nút 1 thì nút 1 cũng sẽ bị disable luôn. Lúc này thì nút 2 sẽ được enable lên. vùng 1 sẽ bị blur đi và có một cái progress bar quay tròn hiển thị là "đang xử lý".
+- Sự kiện tiếp theo rẽ nhánh:
+ + Nếu user bấm nút 2: thực hiện hủy quá trình xử lý đến server, vùng 1 hết bị blur. Hai nút 1, nút 3 lại được enable lên, nút 2 bị disable đi.
+ + Nếu user không bấm đợi xử lý ảnh: server xử lý ảnh xong sẽ có được các thông tin từ ảnh đó và tiến hành thực hiện các việc sau: 
+  * trả ảnh đã được detect-vẽ box về cho client vào vùng 1
+  * hiển thị thông tin mô tả vào vùng 3
+  * hiển thị kết quả search bing vào vùng 2
+  * Khi đã trả kết quả xong, nút 2 và nút 1 bị disable, nút 3 lại được enable lên
+- Kết thúc một quá trình chạy và cứ thế. 
