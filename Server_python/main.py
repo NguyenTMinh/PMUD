@@ -9,6 +9,8 @@ from load_model import detect_from_image
 PATH_GUESS = 'image_to_guess/'
 PATH_DETECTED = 'image_detected/'
 
+PATH_SERVER_JS = 'D:/Programs/Xampp/htdocs/client/image_detect/'
+
 # Khởi tạo Flask
 app = Flask(__name__)
 
@@ -28,14 +30,19 @@ def home_page():
     return detect()
 
 #test route api
-@app.route('/detect_from_image')
-def detect_image():
-	image_guess = PATH_GUESS + 'di_thang_9.png'
-	image_out = PATH_DETECTED + 'di_thang_9.png'
-	guess = detect_from_image(image_guess, image_out)
+@app.route('/detect_image/<string:path>', methods=['GET'])
+def detect_image(path):
+	path_to_show = path.replace('%','/')
+	print('path: ' + path_to_show)
+	image_out = PATH_SERVER_JS + 'di_thang_9.png'
+	guess = detect_from_image(path_to_show, image_out)
 	print(guess)
 	return guess
 
+@app.route('/test/<int:id_>', methods=['GET'])
+def test(id_):
+	print(id_)
+	return "ok"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=False)
