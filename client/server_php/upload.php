@@ -5,4 +5,9 @@ $randomNumber = mt_rand(1, 10);
 $string = strval($randomNumber);
 file_put_contents('../image/img.png', $imageData);
 echo $imageData;
+// <script>
+// 	console.log("ddddddddddddddddddd");
+// </script>
+
 ?>
+

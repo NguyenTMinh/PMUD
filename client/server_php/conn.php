@@ -3,7 +3,7 @@
 // Connect to the MySQL database
 $hostname = "localhost";
 $username = "root";
-$password = "";
+$password = "123456";
 $database = "traffic_sign";
 
 $conn = mysqli_connect($hostname, $username, $password, $database);

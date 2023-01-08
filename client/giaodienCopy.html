@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/grid.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        body {
+            background: rgb(2, 0, 36);
+            background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(70, 121, 9, 0.4374124649859944) 35%, rgba(0, 212, 255, 1) 100%);
+        }
+
+        .main {}
+
+        .body {
+            overflow: :;
+        }
+
+        .web_cam {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-direction: column;
+            margin-top: 100px;
+        }
+
+        .video {
+            position: relative;
+            background-color: #23FC00;
+
+        }
+
+        .canvas {
+
+            position: relative;
+            z-index: 2;
+            top: -480px;
+            left: 0;
+        }
+
+        .group_btn {
+            position: absolute;
+            z-index: 10;
+            top: -60px;
+
+        }
+
+        .container {
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .desc {
+            margin: 0 50px;
+            height: 100px;
+        }
+
+        .search_bing {
+            margin: 0 50px;
+            height: 100px;
+
+
+
+        }
+
+        .detect_desc {}
+
+        #container {
+            position: absolute;
+            top: 30px;
+            /* margin: 20px; */
+            margin-bottom: 0;
+            position: relative;
+            display: inline-block;
+        }
+
+        .body {
+            position: absolute;
+            min-height: 130px;
+            top: 38px;
+            padding: 10px;
+            width: 100%;
+            background: #444;
+            border-top: 5px solid orange;
+            border-bottom: 2px solid #ccc;
+            color: white;
+            font-family: georgia;
+            font-size: 14px;
+            line-height: 1.5;
+            box-shadow: inset 0 0 5px #333;
+            overflow: scroll;
+        }
+
+
+        .search_img {
+            position: absolute;
+            top: 200px;
+            left: 5px;
+        }
+
+        .content {
+            background: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fhanoispiritofplace.com%2Fhinh-nen-phong-canh-thien-nhien-dep-nhat-the-gioi.html&psig=AOvVaw2Q79b9LfVdbnjnID6ET-mE&ust=1673237313675000&source=images&cd=vfe&ved=0CA8QjRxqFwoTCPCZs--Mt_wCFQAAAAAdAAAAABAE');
+
+            text-align: center;
+            margin: 25px 0 0 0;
+        }
+
+        .admin {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main grid wide">
+
+        <h1 class="content">
+            Ứng dụng nhận diện biển báo giao thông
+        </h1>
+
+
+        <div class="row">
+            <div class="web_cam col l-6 m-6 c-12">
+
+                <video class="video" width="640" height="480" autoplay></video>
+                <canvas class="canvas" width="640" height="480"></canvas>
+
+                <div class="group_btn">
+                    <button type="button" class="open_cam btn btn-outline-primary">
+                        <h3> Open</h3>
+                    </button>
+                    <button type="button" disabled class="save btn btn-outline-secondary">
+                        <h3> Chụp lại màn hình</h3>
+                    </button>
+                    <button type="button" disabled class="start btn btn-outline-success">
+                        <h3> Bắt đầu</h3>
+                    </button>
+                    <button type="button" disabled class="cancel btn btn-outline-danger">
+                        <h3> Hủy</h3>
+                    </button>
+
+                    <!-- <button class="open_cam"> Open</button>
+                    <button class="save">Chụp lại màn hình</button>
+                    <button class="start">Bắt đầu</button>
+                    <button class="cancel">Hủy</button> -->
+                </div>
+            </div>
+
+            <div class="container col l-6 m-6 c-12">
+                <div class="detect_desc">
+                    <div class="container">
+                        <div class="body">
+                            <p>
+                               
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="detect_search">
+                    <iframe class="search_img" width="556px" height="380px"
+                        src="https://www.bing.com/images/search?q=School+Traffic+Signs&form=RESTAB&first=1&tsc=ImageHoverTitle"
+                        frameborder="100"></iframe>
+
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+    </div>
+
+    </div>
+    <div class="admin">
+        <button type="button" class="save btn btn-outline-secondary">
+            <h3> Admin</h3>
+        </button>
+    </div>
+
+    <div class="save_temp">
+        <img src="" alt="" class="img">
+
+    </div>
+    <script>
+        const video = document.querySelector('.video');
+        const open_cam = document.querySelector('.open_cam');
+        const saveButton = document.querySelector('.save');
+        const cancel = document.querySelector('.cancel');
+        const start = document.querySelector('.start');
+
+        const img = document.querySelector('.img');
+        const canvas = document.querySelector('.canvas');
+        const context = canvas.getContext('2d');
+        const constraints = {
+            video: true,
+        };
+
+
+        const detect_name = document.querySelector(".detect_name h1");
+        const search_img = document.querySelector(".search_img");
+        const detect_desc = document.querySelector(".body p");
+        const btn = document.querySelector("#button");
+
+        open_cam.addEventListener('click', () => {
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then((stream) => {
+                    video.srcObject = stream;
+                });
+
+            open_cam.setAttribute('disabled', true);
+            saveButton.removeAttribute('disabled');
+            cancel.removeAttribute('disabled');
+        });
+
+        cancel.addEventListener('click', () => {
+
+            location.reload();
+        })
+
+        saveButton.addEventListener('click', async () => {
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            const dataURI = canvas.toDataURL();
+
+            // set the src attribute of the image element to the data URI
+            img.src = dataURI;
+            console.log(dataURI);
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then((stream) => {
+                    video.srcObject = stream;
+                    stream.getTracks()[0].stop();
+                });
+            start.removeAttribute('disabled');
+
+        });
+
+        start.addEventListener('click', async () => {
+            const imageData = img.src;
+            console.log(imageData);
+            var url = 'server_php/upload.php';
+            var formData = new FormData();
+            formData.append('img', imageData);
+
+            fetch(url, { method: 'POST', body: formData })
+                .then(function (response) {
+                    return response.text();
+                })
+                .then(function (body) {
+                    console.log(body);
+                })
+                .catch((err) => console.log(err));
+
+            detect();
+
+        })
+
+
+        function detect() {
+            let path = "D:%Programs%Xampp%htdocs%PMUD%client%image%img.png";
+            fetch("http://localhost:5000/detect_image/" + path)
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                    fetch("http://localhost/PMUD/client/server_php/apiGetAll.php")
+                        .then((res) => res.json())
+                        .then((res) => {
+                            console.log(res);
+
+                            for (let i = 0; i < res.length; i++) {
+                                if (res[i].id == data['id']) {
+                                    console.log(data['id']);
+                                    detect_desc.innerHTML = `Đây là biển ${res[i].traffic_sign} , một vài hình ảnh tương tự bạn có thể tìm trên Bing.com 
+                                    <br/> ${res[i].descripsion}`;
+                                    search_img.src = ` https://www.bing.com/images/search?q=${res[i].search}+Traffic+Signs&form=RESTAB&first=1&tsc=ImageHoverTitle `;
+
+                                    
+                                    
+                                }
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                    
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+    </script>
+</body>
+
+</html>
