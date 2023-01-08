@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Document</title>
+    <style>
+        #video {
+            position: relative;
+            margin-bottom: 10px;
+            width: 400px;
+            height: 320px;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        #canvas {
+            position: absolute;
+            top: 50px;
+            left: 35px;
+        }
+
+        .container__capture {
+            display: flex;
+            margin: 50px 0;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        img {}
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <body>
+
+        <div class="tool">
+            <input type="color">
+            <button>
+                <i class="fa-regular fa-eraser"></i>
+            </button>
+            <button>
+                -
+            </button>
+            <button>
+                20
+            </button>
+            <button>
+                +
+            </button>
+            <button>
+                <i class="fa-solid fa-floppy-disk"></i>
+            </button>
+            <button>
+                <i class="fa-sharp fa-solid fa-circle-xmark"></i>
+            </button>
+        </div>
+        <div class="container">
+            <div style="width: 50%">
+
+                <canvas id="canvas" width="640" height="480"></canvas>
+
+            </div>
+            <div class="container__capture">
+                <video id="video" autoplay></video>
+                <button id="capture">Capture</button>
+                <button id="save">Save</button>
+                <input type="text" name="" id="input">
+
+            </div>
+
+        </div>
+        <img src="" alt="" id="img" hidden>
+        <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js"></script>
+        <script type="text/javascript">
+            // Installs globals onto window:
+            // * Buffer
+            // * require (monkey-patches if already defined)
+            // * process
+            // You can pass in an arbitrary object if you do not wish to pollute
+            // the global namespace.
+            BrowserFS.install(window);
+            // Configures BrowserFS to use the LocalStorage file system.
+            BrowserFS.configure({
+                fs: "LocalStorage"
+            }, function (e) {
+                if (e) {
+                    // An error happened!
+                    throw e;
+                }
+                // Otherwise, BrowserFS is ready-to-use!
+            });
+        </script>
+
+        <script>
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            const captureButton = document.getElementById('capture');
+            const saveButton = document.getElementById('save');
+            const input = document.getElementById('input');
+            const img = document.getElementById('img');
+            const context = canvas.getContext('2d');
+            const constraints = {
+                video: true,
+            };
+
+            captureButton.addEventListener('click', () => {
+                navigator.mediaDevices.getUserMedia(constraints)
+                    .then((stream) => {
+                        video.srcObject = stream;
+                    });
+            });
+
+            captureButton.addEventListener('click', () => {
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                const dataURI = canvas.toDataURL();
+
+                // set the src attribute of the image element to the data URI
+                img.src = dataURI;
+            });
+            let isDrawing = false;
+            let lastX = 0;
+            let lastY = 0;
+
+            canvas.addEventListener('mousedown', (event) => {
+                console.log('mouse', event)
+                isDrawing = true;
+                startX = event.clientX;
+                startY = event.clientY;
+            });
+
+            let bndbox = [];
+
+            canvas.addEventListener('mousemove', (event) => {
+                if (isDrawing) {
+                    console.log('mouse')
+
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+
+                    context.beginPath();
+                    const width = event.clientX - startX;
+                    const height = event.clientY - startY;
+
+                    const x = startX;
+                    const y = startY;
+                    context.strokeStyle = 'blue';
+                    context.drawImage(img, 0, 0, canvas.width, canvas.height)
+                    context.strokeRect(x - 35, y - 50, width, height);
+                    bndbox = [x - 35, y - 50, width, height, input.value, img.src];
+                    console.log(bndbox);
+                }
+            });
+
+
+
+            canvas.addEventListener('mouseup', () => {
+                console.log('mouse')
+                isDrawing = false;
+            });
+
+            saveButton.addEventListener('click', (event) => {
+
+                fetch('server_php/sendData.php', {
+                    method: 'POST',
+                    body: JSON.stringify(bndbox),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(function (response) {
+                    return response.text();
+                })
+                    .then(function (body) {
+                        console.log(body);
+                    })
+                    .catch((err) => console.log(err))
+
+            })
+
+
+        </script>
+    </body>
+</body>
+
+</html>
