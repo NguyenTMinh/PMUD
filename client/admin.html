@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #video {
+            position: relative;
+            margin-bottom: 10px;
+            width: 400px;
+            height: 320px;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        #canvas {
+            position: absolute;
+            top: 50px;
+            left: 35px;
+        }
+
+        .container__capture {
+            display: flex;
+            margin: 50px 0;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        img {}
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <body>
+        <div class="container">
+            <div style="width: 50%">
+
+                <canvas id="canvas" width="640" height="480"></canvas>
+
+            </div>
+            <div class="container__capture">
+                <video id="video" autoplay></video>
+                <button id="capture">Capture</button>
+                <button id="save">Save</button>
+                <input type="text" name="" id="input">
+
+            </div>
+
+        </div>
+        <img src="" alt="" id="img" hidden>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
+            integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script>
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            const captureButton = document.getElementById('capture');
+            const saveButton = document.getElementById('save');
+            const input = document.getElementById('input');
+            const img = document.getElementById('img');
+            const context = canvas.getContext('2d');
+            const constraints = {
+                video: true,
+            };
+
+            captureButton.addEventListener('click', () => {
+                navigator.mediaDevices.getUserMedia(constraints)
+                    .then((stream) => {
+                        video.srcObject = stream;
+                    });
+            });
+
+            captureButton.addEventListener('click', () => {
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                const dataURI = canvas.toDataURL();
+
+                // set the src attribute of the image element to the data URI
+                img.src = dataURI;
+                console.log(dataURI);
+            });
+            let isDrawing = false;
+            let lastX = 0;
+            let lastY = 0;
+
+            canvas.addEventListener('mousedown', (event) => {
+                console.log('mouse', event)
+                isDrawing = true;
+                startX = event.clientX;
+                startY = event.clientY;
+            });
+
+            let bndbox = [];
+
+            canvas.addEventListener('mousemove', (event) => {
+                if (isDrawing) {
+                    console.log('mouse')
+
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+
+                    context.beginPath();
+                    const width = event.clientX - startX;
+                    const height = event.clientY - startY;
+
+                    const x = startX;
+                    const y = startY;
+                    context.strokeStyle = 'blue';
+                    context.drawImage(img, 0, 0, canvas.width, canvas.height)
+                    context.strokeRect(x - 35, y - 50, width, height);
+                    console.log(x - 35, y - 50, width, height);
+                    bndbox = [x - 35, y - 50, width, height];
+                }
+            });
+
+
+
+            canvas.addEventListener('mouseup', () => {
+                console.log('mouse')
+                isDrawing = false;
+            });
+
+            saveButton.addEventListener('click', (event) => {
+                const temp = (Math.random() * 1000000000).toFixed(0);
+                var xmlString = "<annotation></annotation>";
+                var parser = new DOMParser();
+                var xmlDoc = parser.parseFromString(xmlString, "text/xml"); //important to use "text/xml"
+                var elements = xmlDoc.getElementsByTagName("annotation");
+                var data = `
+                    <folder>${input.value}</folder>
+                    <filename>${input.value}_${temp}.png</filename>
+                    <path>D:\\Code\\Tensorflow\\Collecting Image\\datasets_xetuhanh\\${input.value}\\${input.value}_${temp}.png</path>
+                    <source>
+                        <database>Unknown</database>
+                    </source>
+                    <size>
+                        <width>640</width>
+                        <height>480</height>
+                        <depth>3</depth>
+                    </size>
+                    <segmented>0</segmented>
+                    <object>
+                        <name>di_thang</name>
+                        <pose>Unspecified</pose>
+                        <truncated>0</truncated>
+                        <difficult>0</difficult>
+                        <bndbox>
+                            <xmin>${bndbox[0]}</xmin>
+                            <ymin>${bndbox[1]}</ymin>
+                            <xmax>${bndbox[0] + bndbox[2]}</xmax>
+                            <ymax>${bndbox[1] + bndbox[3]}</ymax>
+                        </bndbox>
+                    </object>
+                `;
+
+
+
+
+
+
+                elements[0].innerHTML = data;
+                console.log(elements[0]);
+                var serializer = new XMLSerializer();
+                var xmlString = serializer.serializeToString(xmlDoc);
+                var blob = new Blob([xmlString], { type: "text/xml" });
+                saveAs(blob, `${input.value}_${temp}.xml`);
+
+            })
+
+
+        </script>
+    </body>
+</body>
+
+</html>

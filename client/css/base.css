@@ -1,0 +1,242 @@
+:root{
+    --primary-color:#ff0000;
+    --white-color:#fff;
+    --black-color:#000;
+    --text-color: #333;
+    --border-color: #dbdbdb;
+    --header-height: 120px;
+    --navbar-height: 44px;
+    --header-with-search: calc(var(--header-height) - var(--navbar-height));
+}
+*{
+    box-sizing: inherit;
+
+}
+
+html{
+    font-size: 62.5%;
+    line-height: 1.6rem;
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;   
+}
+/* Responsive */
+
+
+.grid__row {
+    display:flex;
+    flex-wrap: wrap;
+    margin:0 -5px;
+    
+}
+/*làm 6 sản phẩm mỗi cái chiếm 12/6=2 lấy 8.33 *2=16.66 */
+/* hàm 1 cột */
+.grid__column-2 {
+    padding:0 5px;
+    width: 16.666%;
+}
+/* hàm 1 cột */
+/*làm 5 sản phẩm mỗi cái chiếm 12/5 =2.4 lấy 8.33 * 2.4=*/
+.grid__column-2-4 {
+    padding: 5px;
+    width: 19.992%; 
+}
+/* hàm 1 cột */
+
+.grid__column-10 {
+    padding: 0 5px;
+    width: 83.332%;
+}
+
+
+
+
+
+/* animation */
+@keyframes fadeIn{
+    from{
+        opacity: 0;
+    }
+
+    to{
+        opacity: 1;
+    }
+}
+@keyframes growth{
+    from{
+        transform: scale(var(--growth-from));
+    }
+    to{
+        transform: scale(var(--growth-to));
+    }
+}
+/* Modal */
+.modal{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    display:flex;
+}
+
+.modal__overlay{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal__body{
+    /* ko cần độ dài để nó tự mở  rộng nhờ element con*/
+    /* width:40%; 
+    height: 60%; */
+    --growth-from: 0.7;
+    --growth-to: 1;
+
+    margin: auto;
+    position: relative;
+    z-index: 1;
+    animation: growth linear 0.1s;
+}
+
+/* Button */
+
+.btn{
+    min-width: 132px;
+    height: 34px;
+    text-decoration: none;
+    border-radius: 2px;
+    border: none;
+    font-size: 1.4rem;
+    padding: 0 8px;
+    cursor: pointer;
+    outline: none;
+    color: var(--text-color);
+    display:inline-flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1.6rem;
+
+}
+.btn--hover:hover{
+    background-color: rgba(0,0,0,0.1);
+}
+
+
+.btn.btn--primary{
+    color: var(--white-color);
+    background-color: var(--primary-color);
+
+}
+
+.btn.btn--size-s{
+    height: 32px;
+    font-size: 12px;
+    padding: 0 8px;
+}
+
+.btn.btn--disabled{
+    cursor: default;
+    background-color:#999;
+    color: #333;
+}
+
+/* Selection */
+.select-input {
+    padding: 0 12px;
+    height: 34px;
+    border-radius: 2px;
+    background-color: var(--white-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 200px;
+    position: relative;
+
+
+}
+.select-input__icon {
+    background-color: var(--white-color);
+    font-size: 1.5rem;
+    margin: 0 8px 0 12px;
+
+}
+
+.select-input__label {
+    font-size: 1.4rem;
+
+}
+.select-input__list {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 80%;
+    border-radius: 2px;
+    list-style: none;
+    padding: 8px 12px;
+    background-color: var(--white-color);
+    display: none;
+
+
+}
+
+.select-input:hover .select-input__list {
+    display: block;
+}
+
+
+
+.select-input__link {
+    text-decoration: none;
+    font-size: 1.4rem;
+    color: var(--text-color);
+    display: block;
+    padding: 4px 0;
+}
+.select-input__link:hover {
+    color: var(--primary-color);
+
+}
+
+
+/* pagination */
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    list-style: none;
+
+}
+
+.pagination-item {
+    margin: 0 10px;
+}
+
+
+
+.pagination-item__link {
+    display: block;
+    text-decoration: none;
+    font-size:  2rem;
+    font-weight: 300;
+    color: #939393;
+    min-width: 40px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 2px;
+
+}
+.pagination-item__active .pagination-item__link {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+
+}
+.pagination-item__active .pagination-item__link:hover {
+   background-color: #d43f3f;
+}
+
+
+
+
